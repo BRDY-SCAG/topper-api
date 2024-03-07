@@ -3,12 +3,21 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const { response } = require('express');
+const { error } = require('console');
+const { url } = require('inspector');
+const pupeteer = require('pupeteer');
+
+
+// url for are cant figure out bruh shoot me 
+//https://www.4are.com/availability/
 
 const app = express();
 
-const evoData = [];
-const adventureData =[];
-const commercialData = [];
+
+const evoData =	[];
+const adventureData =	[];
+const commercialData =	[];
+const areData = [];
 
 //home
 app.get('/', (req,res) => {
@@ -16,7 +25,7 @@ app.get('/', (req,res) => {
 })
 
 // evo name for evo product
-app.get('/smart-cap/evo', (req,res) => {
+app.get('/topper/evo', (req,res) => {
 	
 	axios
 	.get("https://www.na.rsismartcap.com/products/smartcap-evo-c")
@@ -25,7 +34,6 @@ app.get('/smart-cap/evo', (req,res) => {
 		const $ = cheerio.load(html);
 		$('.build-row').each((index, element) => {
 			const brand = $(element).find('.column__make strong').text().trim();
-
 			const year = $(element).find('.column__year p:last-child').text().trim();
 			const makeModel = $(element).find('.column__make strong').text().trim();
 			const bed = $(element).find('.column__bed p:last-child').text().trim();
@@ -42,15 +50,6 @@ app.get('/smart-cap/evo', (req,res) => {
 				"URL": checkoutUrl
 			}];
 			evoData.push(dataset);
-			//console.log(`Brand: ${brand}`);
-  			//console.log(`Year: ${year}`);
-  			//console.log(`Make/Model: ${makeModel}`);
-  			//console.log(`Bed: ${bed}`);
-  			//console.log(`Part Number: ${partNo}`);
-  			//console.log(`Price: ${price}`);
-			//console.log(`Url: ${checkoutUrl.trim()}`);	
-  			//console.log('---');
-
 
 		});
 		console.log('Parsed Data', evoData);
@@ -61,7 +60,7 @@ app.get('/smart-cap/evo', (req,res) => {
 });
 
 //adventr name for adventure product
-app.get('/smart-cap/adventure', (req,res) => {
+app.get('/topper/adventure', (req,res) => {
 	axios
 	.get("https://www.na.rsismartcap.com/products/smartcap-evo-a")
 	.then(function(response) {
@@ -69,7 +68,6 @@ app.get('/smart-cap/adventure', (req,res) => {
 		const $ = cheerio.load(html);
 		$('.build-row').each((index, element) => {
 			const brand = $(element).find('.column__make strong').text().trim();
-
 			const year = $(element).find('.column__year p:last-child').text().trim();
 			const makeModel = $(element).find('.column__make strong').text().trim();
 			const bed = $(element).find('.column__bed p:last-child').text().trim();
@@ -86,23 +84,16 @@ app.get('/smart-cap/adventure', (req,res) => {
 				"URL": checkoutUrl
 			}];
 			adventureData.push(dataset);
-			/* console.log(`Brand: ${brand}`);
-  			console.log(`Year: ${year}`);
-  			console.log(`Make/Model: ${makeModel}`);
-  			console.log(`Bed: ${bed}`);
-  			console.log(`Part Number: ${partNo}`);
-  			console.log(`Price: ${price}`);
-			console.log(`Url: ${checkoutUrl.trim()}`);	
-  			console.log('---'); */
+			
 		});
 		console.log('Parsed Data', adventureData);
 		console.log(adventureData.length);
 		res.json(adventureData)
 	})
-})
+});
 
 //commercial name for commercial product
-app.get('/smart-cap/commercial', (req,res) => {
+app.get('/topper/commercial', (req,res) => {
 	axios
 	.get("https://www.na.rsismartcap.com/products/smartcap-evo-c")
 	.then(function(response){
@@ -110,7 +101,6 @@ app.get('/smart-cap/commercial', (req,res) => {
 		const $ = cheerio.load(html);
 		$('.build-row').each((index, element) => {
 			const brand = $(element).find('.column__make strong').text().trim();
-
 			const year = $(element).find('.column__year p:last-child').text().trim();
 			const makeModel = $(element).find('.column__make strong').text().trim();
 			const bed = $(element).find('.column__bed p:last-child').text().trim();
@@ -126,19 +116,26 @@ app.get('/smart-cap/commercial', (req,res) => {
 				"URL": checkoutUrl
 			}];
 			commercialData.push(dataset);
-			/* console.log(`Brand: ${brand}`);
-  			console.log(`Year: ${year}`);
-  			console.log(`Make/Model: ${makeModel}`);
-  			console.log(`Bed: ${bed}`);
-  			console.log(`Part Number: ${partNo}`);
-  			console.log(`Price: ${price}`);
-			console.log(`Url: ${checkoutUrl.trim()}`);	
-  			console.log('---'); */
+
 		});
 		console.log('Parsed Data', commercialData);
 		console.log(commercialData.length);
 		res.json(commercialData);
 	})
+});
+
+app.get('topper/snup/ChevyGMC', (req,res) => {
+	axios
+	.get('https://www.snugtop.com/availability/chevy-gmc')
+	.then(function(response){
+		const html = response.data;
+		const $  = cheerio.load(html)
+		$('.odd').each((index, element) => {
+			const 
+		})
+
+	})
 })
+
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
